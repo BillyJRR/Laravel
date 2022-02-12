@@ -10,7 +10,7 @@
                     <div class="input-group">
                         <label class="input-group-text">Curso</label>
                         <select class="form-select" name="course">
-                            <option selected>Elija el curso al que pertenece</option>
+                            <option selected value="">Elija el curso al que pertenece</option>
                             @foreach($course as $c)
                             <option value="{{ $c->id }}">{{ $c->name }}</option>
                             @endforeach
@@ -86,27 +86,37 @@
                 let description = $('input[name="description"]').val();
                 let course = $('select[name="course"]').val();
                 let subId = $('input[id="subId"]').val();
-    
+
                 let url = updated === false ? '{{ url('api/subcourse_api') }}' : '{{ url('api/subcourse_api') }}'+'/'+subId;
                 let method = updated === false ? 'POST' : 'PUT';
-    
-                $.ajax({
-                    url: url,
-                    type: method,
-                    data: {
-                        'courses_id': course,
-                        'name': name,
-                        'description': description
-                    },
-                    success: function (e) {
-                        list_subcourse();
-                        $('#subcourse_form').trigger('reset');
-                        updated = false;
-                    },
-                    error: function(jqXHR, textStatus, errorThrown){
-                        alert('Error: ' + textStatus + ' - ' + errorThrown);
-                    }
-                });
+                
+                if(!name == "" && !description == "" && !course == ""){
+                    $.ajax({
+                        url: url,
+                        type: method,
+                        data: {
+                            'courses_id': course,
+                            'name': name,
+                            'description': description
+                        },
+                        success: function (e) {
+                            list_subcourse();
+                            $('#subcourse_form').trigger('reset');
+                            updated = false;
+                        },
+                        error: function(jqXHR, textStatus, errorThrown){
+                            alert('Error: ' + textStatus + ' - ' + errorThrown);
+                        }
+                    });
+                }else{
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Ingrese los datos correctamente',
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
             })
     
             $(document).on('click', '#deleted_subcourse', function() {

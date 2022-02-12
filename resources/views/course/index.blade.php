@@ -79,22 +79,32 @@
             let url = updated === false ? '{{ url('api/course_api') }}' : '{{ url('api/course_api') }}'+'/'+courseId;
             let method = updated === false ? 'POST' : 'PUT';
 
-            $.ajax({
-                url: url,
-                type: method,
-                data: {
-                    'name': name,
-                    'description': description
-                },
-                success: function (e) {
-                    list_course();
-                    $('#course_form').trigger('reset');
-                    updated = false;
-                },
-                error: function(jqXHR, textStatus, errorThrown){
-                    alert('Error: ' + textStatus + ' - ' + errorThrown);
-                }
-            });
+            if(!name == "" && !description == ""){
+                $.ajax({
+                    url: url,
+                    type: method,
+                    data: {
+                        'name': name,
+                        'description': description
+                    },
+                    success: function (e) {
+                        list_course();
+                        $('#course_form').trigger('reset');
+                        updated = false;
+                    },
+                    error: function(jqXHR, textStatus, errorThrown){
+                        alert('Error: ' + textStatus + ' - ' + errorThrown);
+                    }
+                });
+            }else{
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Ingrese los datos correctamente',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
         })
 
         $(document).on('click', '#deleted_course', function() {
