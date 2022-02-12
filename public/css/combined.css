@@ -1,0 +1,11 @@
+.section-main .routes{
+    width: 100%;
+}
+.section-main .routes .list-routes{
+    display: flex;
+}
+.section-main .routes .list-routes a{
+    text-decoration: none;
+    color: #5d5d63;
+    padding: 0rem 1rem 0rem 1rem;
+}
