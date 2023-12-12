@@ -1,0 +1,66 @@
+version: '3'
+services:
+    #PHP
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: mi-app-laravel7.4
+        container_name: app_billy
+        tty: true
+        environment:
+            SERVICE_NAME: app
+            SERVICE_TAGS: dev
+        working_dir: /var/www
+        volumes:
+            - ./:/var/www
+            - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+        networks:
+            - app-network
+    #Nginx Service
+    webserver:
+        image: nginx:alpine
+        container_name: webserver_billy
+        tty: true
+        volumes:
+            - ./:/var/www
+            - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+        ports:
+            - "80:80"
+            - "443:443"
+        networks:
+            - app-network
+    #MySQL Service
+    db:
+        volumes:
+            - bd_lega:/var/lib/mysql
+            - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
+        image: mysql:8
+        container_name: db_billy
+        tty: true
+        ports:
+            - "3306:3306"
+        environment:
+            MYSQL_DATABASE: db_billy
+            MYSQL_ROOT_PASSWORD: root123*
+            SERVICE_TAGS: dev
+            SERVICE_NAME: mysql
+        networks:
+            - app-network
+
+    adminer:
+        image: adminer
+        ports:
+            - 8080:8080
+        networks:
+            - app-network
+        depends_on:
+            - db
+
+#Docker Networks
+networks:
+    app-network:
+        driver: bridge
+volumes:
+    bd_lega:
+        driver: local
