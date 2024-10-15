@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8 justify-content-center d-flex pt-5">
-            <h3>Proyecto de Laravel + API + AJAX</h3>
+            <h3>Proyecto de Laravel + API + AJAX testing</h3>
         </div>
     </div>
 </div>
