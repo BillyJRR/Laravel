@@ -21,6 +21,7 @@ jobs:
       - name: Deploy to EC2
         run: |
           ssh -o StrictHostKeyChecking=no ec2-user@18.230.6.16 << 'EOF'
+            set -e
             cd /var/www/proyecto-laravel
             git pull origin main
             composer install --no-dev --optimize-autoloader
